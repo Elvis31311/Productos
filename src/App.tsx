@@ -16,15 +16,15 @@ function App() {
         <center><h1>Productos</h1></center>
       </NeuCard>
     <div className='grid-container-products'>
-      
+
       <NeuCard>
       <div className="container">
         <table className="product-table">
           <thead>
             <tr>
               <th>ID</th>
-              <th>Nombre</th>
-              <th>Precio</th>
+              <th>Nombreee</th>
+              <th>Preciooo</th>
               <th>Descripción</th>
             </tr>
           </thead>
