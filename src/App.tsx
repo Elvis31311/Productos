@@ -23,7 +23,7 @@ function App() {
             <tr>
               <th>ID</th>
               <th>Nombre</th>
-              <th>Precioo</th>
+              <th>Precio</th>
               <th>Descripción</th>
             </tr>
           </thead>
