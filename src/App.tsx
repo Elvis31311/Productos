@@ -1,71 +1,83 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react' // Importante agregar useEffect
 import './App.css'
 import { Button } from '../src/components/button/button'
 import { NeuCard } from '../src/components/NeuCard/NeuCard'
-import './App.css'
+import { supabase } from '../src/backend/Conection/conection';
 
 function App() {
-  const [productos] = useState([
-    { id: 1, nombre: 'Laptop', precio: 1200, descripcion: 'Ultima generación' },
-    { id: 2, nombre: 'PC', precio: 800, descripcion: 'de escritorio' }
-  ]);
+  // 1. Estado para guardar los productos de la base de datos
+  const [productos, setProductos] = useState<any[]>([]);
+
+  // 2. Función para obtener los datos
+  const obtenerProductos = async () => {
+    const { data, error } = await supabase.from('productos').select('*');
+    if (error) {
+      console.error("Error conectando:", error.message);
+    } else {
+      setProductos(data || []); // Guardamos los datos en el estado
+    }
+  };
+
+  useEffect(() => {
+    obtenerProductos();
+
+    const intervalo = setInterval(() => {
+      obtenerProductos();
+    }, 2000);
+
+    return () => clearInterval(intervalo);
+  }, []);
 
   return (
-    <>
-      <div className="parent">
-        <div className="div1">
-          <NeuCard>
-            <center><h1>Temas</h1></center>
-          </NeuCard> 
-        </div>
-
-        <div className="div2">
-          <NeuCard>
-            {/* Envolvemos los botones en este div */}
-            <div className="button-vertical-container">
-              <Button variant="add" label="✚ Añadir" />
-              <Button variant="update" label="✏️ Actualizar" />
-              <Button variant="delete" label="🗑️ Eliminar" />
-            </div>
-          </NeuCard>
-        </div>
-
-        <div className="div3"> 
-          <NeuCard>
-            <center><h2>Lista de Productos</h2></center>
-          </NeuCard>
-        </div>
-
-        <div className="div4"> 
-          <NeuCard>
-            <div className="container">
-              <table className="product-table">
-                <thead>
-                  <tr>
-                  <th>ID</th>
-                  <th>Nombreee</th>
-                  <th>Preciooo</th>
-                  <th>Descripción</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  {productos.map(producto => (
-                    <tr key={producto.id}>
-                      <td>{producto.id}</td>
-                      <td>{producto.nombre}</td>
-                      <td>${producto.precio}</td>
-                      <td>{producto.descripcion}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </NeuCard>
-        </div>
+    <div className="parent">
+      <div className="div1">
+        <NeuCard><h1>Dashboard</h1></NeuCard>
       </div>
-    </>
-  )
+
+      <div className="div2">
+        <NeuCard>
+          <div className="button-vertical-container">
+            <Button variant="add" label="✚ Añadir" />
+            <Button variant="update" label="✏️ Actualizar" />
+          </div>
+        </NeuCard>
+      </div>
+      <div className="div3">
+        <NeuCard>
+          <h2>Productos</h2>
+        </NeuCard>
+      </div>
+
+      <div className="div4">
+        <NeuCard>
+          <div className="container">
+            <table className="product-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nombre</th>
+                  <th>Precio</th>
+                  <th>Descripción</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                {productos.map((p) => (
+                  <tr key={p.id}>
+                    <td>{p.id}</td>
+                    <td>{p.nombre}</td>
+                    <td>${p.precio}</td>
+                    <td>{p.descripcion}</td>
+                    <td>{p.estado ? "✅" : "❌"}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </NeuCard>
+      </div>
+    </div>
+  );
 }
 
-export default App
+export default App;
