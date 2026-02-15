@@ -1,11 +1,11 @@
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
-  font-weight: 400;
+  font-weight: 500;
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #ffffff;
+  background-color: #afa2a2;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -23,11 +23,12 @@ a:hover {
 }
 
 body {
-  margin: 150px;
-  display: auto;
-  place-items: center;
-  min-width: 100px;
+  margin: 10px;
+  padding: 10px;
+  display: flex;
+  min-width: 320px;
   min-height: 100px;
+  width: 100%;
 }
 
 h1 {

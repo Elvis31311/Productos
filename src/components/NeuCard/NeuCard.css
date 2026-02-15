@@ -1,10 +1,10 @@
 .neu-card-body {
   background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(10px);
-  border-radius: 15px;
+  border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.3);
-  padding: 5px 1px;
+  padding: 5px 15px;
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
   color: #222;
   display: auto;

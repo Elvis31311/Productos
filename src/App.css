@@ -83,14 +83,34 @@
   color: #0e0d0d;
 }
 
-.grid-container-products {
-  display: grid ;
-  grid-template-columns: repeat(2, 1fr); /*Numero de columnas*/
-  gap: 10px; /* space between items */
+.parent {
+  display: grid;
+  grid-template-columns: 5fr 1fr; /* 2 columnas: Principal ancha, Lateral estrecha */
+  grid-template-rows: 100px 50px 500px; /* Encabezado auto, Centro expandible, Pie auto */
+  min-height: 50px; /* IMPORTANTE: Altura completa */
+  gap: 50px; /* Un poco de espacio se ve mejor */
 }
 
-.grid-item {
-  padding: 12px;
-  border-radius: 10px;
-  grid-template-rows: repeat(2, 1fr);
+/* Encabezado (ocupa todo el ancho) */
+.div1 { 
+  grid-column: 1 / -1; /* De la línea 1 a la última */
+  grid-row: 1 / 2;
+}
+
+/* Contenido Principal (Izquierda) */
+.div3 { 
+  grid-column: 1 / 2; 
+  grid-row: 2 / 3;
+}
+
+/* Barra Lateral (Derecha) */
+.div2 { 
+  grid-column: 2 / 3; 
+  grid-row: 2 / 3;
+}
+
+/* Pie de página (Ocupa todo el ancho) */
+.div4 { 
+  grid-column: 1 / -1; 
+  grid-row: 3 / 4;
 }

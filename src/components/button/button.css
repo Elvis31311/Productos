@@ -1,78 +1,46 @@
-
-/* button de agregar */
-.btn-primary-add {
-  width: 100%;
-  padding: 15px;
-  background-color: #00ff15;
-  color: #ffffff;
-  border: none;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-  margin-bottom: 15px;
-}
-
-.btn-primary-add:hover {
-  background-color: #047404;
-}
-
-.btn-primary-add:disabled {
-  background-color: #aaaaaa;
-  cursor: not-allowed;
-}
-
-/* button de editar */
-.btn-primary-update {
-  width: 100%;
-  padding: 12px;
-  background-color: #003cff;
-  color: #ffffff;
-  border: none;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-  margin-bottom: 15px;
-}
-
-.btn-primary-update:hover {
-  background-color: #0074BD;
-}
-
-.btn-primary-update:disabled {
-  background-color: #aaaaaa;
-  cursor: not-allowed;
-}
-
-/* button de eliminar */
+.btn-primary-add, 
+.btn-primary-update, 
 .btn-primary-delete {
-  width: 100%;
+  width: 100%;            /* Ahora sí ocupan todo el ancho del contenedor */
   padding: 12px;
-  background-color: #ff0000;
   color: #ffffff;
   border: none;
   border-radius: 6px;
   font-size: 13px;
   font-weight: 600;
-  letter-spacing: 1.5px;
   text-transform: uppercase;
   cursor: pointer;
-  transition: background-color 0.2s ease;
-  margin-bottom: 15px;
+  transition: all 0.2s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.btn-primary-delete:hover {
-  background-color: #0074BD;
-}
-
+/* Estado deshabilitado común */
+.btn-primary-add:disabled, 
+.btn-primary-update:disabled, 
 .btn-primary-delete:disabled {
   background-color: #aaaaaa;
   cursor: not-allowed;
+}
+
+/* Colores únicos y Hovers */
+.btn-primary-add { background-color: #00ff15; }
+.btn-primary-add:hover { background-color: #047404; }
+
+.btn-primary-update { background-color: #003cff; }
+.btn-primary-update:hover { background-color: #0074BD; }
+
+.btn-primary-delete { background-color: #ff0000; }
+.btn-primary-delete:hover { background-color: #a30000; }
+
+/* Contenedor para que los botones se vean bien en la barra lateral */
+.button-vertical-container {
+  display: flex;
+  flex-direction: row; /* Alineación vertical */
+  gap: 15px;              /* Espacio entre botones */
+  width: 100%;            /* Ocupa todo el ancho de la tarjeta */
+  height: 100%;           /* Ocupa toda la altura de la tarjeta */
+  padding: 10px;
+  box-sizing: border-box;
 }

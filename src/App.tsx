@@ -12,43 +12,58 @@ function App() {
 
   return (
     <>
-      <NeuCard>
-        <center><h1>Productos</h1></center>
-      </NeuCard>
-    <div className='grid-container-products'>
-
-      <NeuCard>
-      <div className="container">
-        <table className="product-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nombreee</th>
-              <th>Preciooo</th>
-              <th>Descripción</th>
-            </tr>
-          </thead>
-          <tbody>
-            {productos.map(producto => (
-              <tr key={producto.id}>
-                <td>{producto.id}</td>
-                <td>{producto.nombre}</td>
-                <td>${producto.precio}</td>
-                <td>{producto.descripcion}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      </NeuCard>
-      <NeuCard>
-        <div className="card">
-          <Button variant="add" label="Agregar Producto" />
-          <Button variant="update" label="Editar" />
-          <Button variant="delete" label="Borrar" /> 
+      <div className="parent">
+        <div className="div1">
+          <NeuCard>
+            <center><h1>Temas</h1></center>
+          </NeuCard> 
         </div>
-      </NeuCard>
-    </div>
+
+        <div className="div2">
+          <NeuCard>
+            {/* Envolvemos los botones en este div */}
+            <div className="button-vertical-container">
+              <Button variant="add" label="✚ Añadir" />
+              <Button variant="update" label="✏️ Actualizar" />
+              <Button variant="delete" label="🗑️ Eliminar" />
+            </div>
+          </NeuCard>
+        </div>
+
+        <div className="div3"> 
+          <NeuCard>
+            <center><h2>Lista de Productos</h2></center>
+          </NeuCard>
+        </div>
+
+        <div className="div4"> 
+          <NeuCard>
+            <div className="container">
+              <table className="product-table">
+                <thead>
+                  <tr>
+                  <th>ID</th>
+                  <th>Nombreee</th>
+                  <th>Preciooo</th>
+                  <th>Descripción</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {productos.map(producto => (
+                    <tr key={producto.id}>
+                      <td>{producto.id}</td>
+                      <td>{producto.nombre}</td>
+                      <td>${producto.precio}</td>
+                      <td>{producto.descripcion}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </NeuCard>
+        </div>
+      </div>
     </>
   )
 }
