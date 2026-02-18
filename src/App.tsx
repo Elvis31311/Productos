@@ -31,7 +31,7 @@ function App() {
   return (
     <div className="parent">
       <div className="div1">
-        <NeuCard><h1>Dashboard</h1></NeuCard>
+        <NeuCard><h1>Productos</h1></NeuCard>
       </div>
 
       <div className="div2">
@@ -68,7 +68,7 @@ function App() {
                     <td>{p.nombre}</td>
                     <td>${p.precio}</td>
                     <td>{p.descripcion}</td>
-                    <td>{p.estado ? "✅" : "❌"}</td>
+                    <td>{p.estado ? "true" : "false"}</td>
                   </tr>
                 ))}
               </tbody>
