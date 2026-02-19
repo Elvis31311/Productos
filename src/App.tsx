@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react' // Importante agregar useEffect
 import './App.css'
-import { Button } from '../src/components/button/button'
-import { NeuCard } from '../src/components/NeuCard/NeuCard'
+import { Button } from './frontend/components/button/button'
+import { NeuCard } from './frontend/components/NeuCard/NeuCard'
 import { supabase } from '../src/backend/Conection/conection';
+import { SupportDialog } from './frontend/components/SupportDialog/SupportDialog'
 
 function App() {
   // 1. Estado para guardar los productos de la base de datos
   const [productos, setProductos] = useState<any[]>([]);
-
+  const [isOpen, setIsOpen] = useState(false);
   // 2. Función para obtener los datos
   const obtenerProductos = async () => {
     const { data, error } = await supabase.from('productos').select('*');
@@ -37,11 +38,17 @@ function App() {
       <div className="div2">
         <NeuCard>
           <div className="button-vertical-container">
-            <Button variant="add" label="✚ Añadir" />
-            <Button variant="update" label="✏️ Actualizar" />
+            <div className="login-form__help" onClick={() => setIsOpen(true)}>
+              <Button variant="add" label="✚ Añadir" />
+            </div>
+    
+            <div className="login-form__help" onClick={() => setIsOpen(true)}>
+              <Button variant="update" label="✏️ Actualizar" />
+            </div>
           </div>
         </NeuCard>
       </div>
+      <SupportDialog isOpen={isOpen} onClose={() => setIsOpen(false)} />
       <div className="div3">
         <NeuCard>
           <h2>Productos</h2>

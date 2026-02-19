@@ -1,7 +1,7 @@
 .btn-primary-add, 
 .btn-primary-update, 
 .btn-primary-delete {
-  width: 100%;            /* Ahora sí ocupan todo el ancho del contenedor */
+  width: 100%;            
   padding: 12px;
   color: #ffffff;
   border: none;
