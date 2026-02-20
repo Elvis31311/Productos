@@ -1,63 +1,157 @@
-import { useState, useEffect } from 'react' // Importante agregar useEffect
-import './App.css'
-import { Button } from './frontend/components/button/button'
-import { NeuCard } from './frontend/components/NeuCard/NeuCard'
+import { useState, useEffect } from 'react';
+import './App.css';
+import { Button } from './frontend/components/button/button';
+import { NeuCard } from './frontend/components/NeuCard/NeuCard';
 import { supabase } from '../src/backend/Conection/conection';
-import { SupportDialog } from './frontend/components/SupportDialog/SupportDialog'
+import { AddProductModal } from './frontend/components/AddProductModal/AddProductModal';
+import { UpdateProductModal } from './frontend/components/UpdateProductModal/UpdateProductModal';
+import { DeleteProductModal } from './frontend/components/DeleteProductModal/DeleteProductModal';
+import { deleteProduct } from '../src/backend/Acctions/Delete/delete';
+
+interface Product {
+  id: number;
+  nombre: string;
+  precio: number;
+  descripcion: string;
+  estado: boolean;
+}
 
 function App() {
-  // 1. Estado para guardar los productos de la base de datos
-  const [productos, setProductos] = useState<any[]>([]);
-  const [isOpen, setIsOpen] = useState(false);
-  // 2. Función para obtener los datos
+  const [productos, setProductos] = useState<Product[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // Modal states
+  const [isAddOpen, setIsAddOpen] = useState(false);
+  const [isUpdateOpen, setIsUpdateOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+
+  // Which product is currently selected?
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+
   const obtenerProductos = async () => {
-    const { data, error } = await supabase.from('productos').select('*');
+    // Solo mostramos productos activos (estado = true)
+    const { data, error } = await supabase
+      .from('productos')
+      .select('*')
+      .eq('estado', true)
+      .order('id', { ascending: true });
+
     if (error) {
       console.error("Error conectando:", error.message);
     } else {
-      setProductos(data || []); // Guardamos los datos en el estado
+      setProductos(data || []);
     }
   };
 
   useEffect(() => {
     obtenerProductos();
-
-    const intervalo = setInterval(() => {
-      obtenerProductos();
-    }, 2000);
-
-    return () => clearInterval(intervalo);
   }, []);
+
+  const handleUpdateClick = (product: Product) => {
+    setSelectedProduct(product);
+    setIsUpdateOpen(true);
+  };
+
+  const handleDeleteClick = (product: Product) => {
+    setSelectedProduct(product);
+    setIsDeleteOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (selectedProduct) {
+      try {
+        await deleteProduct(selectedProduct.id);
+        obtenerProductos();
+      } catch (error) {
+        alert('Hubo un error al eliminar el producto.');
+      }
+    }
+  };
+
+  // Filtrado de la tabla (búsqueda)
+  const filteredProductos = productos.filter(p => {
+    const query = searchQuery.toLowerCase();
+    return (
+      p.id.toString().includes(query) ||
+      p.nombre.toLowerCase().includes(query) ||
+      p.precio.toString().includes(query)
+    );
+  });
 
   return (
     <div className="parent">
-      <div className="div1">
-        <NeuCard><h1>Productos</h1></NeuCard>
+      {/* SECCIÓN SUPERIOR - Título */}
+      <div className="top-section">
+        <NeuCard><h1 className="title-gradient">Gestión de Productos</h1></NeuCard>
       </div>
 
-      <div className="div2">
-        <NeuCard>
-          <div className="button-vertical-container">
-            <div className="login-form__help" onClick={() => setIsOpen(true)}>
-              <Button variant="add" label="✚ Añadir" />
+      {/* SECCIÓN MEDIA - Buscador y Botón Añadir en una sola Card limpia */}
+      <div className="middle-section" style={{ gridTemplateColumns: '1fr' }}>
+        <div className="main-content">
+          <NeuCard>
+            <div style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              gap: '20px'
+            }}>
+
+              <div style={{ flex: '1', minWidth: '250px', display: 'flex', alignItems: 'center' }}>
+                <h2 style={{ marginRight: '20px', whiteSpace: 'nowrap' }}>Lista de Productos</h2>
+                <div className="search-container" style={{ flex: '1' }}>
+                  <input
+                    type="text"
+                    placeholder="🔍 Buscar por ID, Nombre o Precio..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="search-input"
+                    style={{ margin: 0, width: '100%', maxWidth: 'none' }}
+                  />
+                </div>
+              </div>
+
+              <div style={{ width: '180px' }} onClick={() => setIsAddOpen(true)}>
+                <Button variant="add" label="✚ Añadir Nuevo" />
+              </div>
+
             </div>
-    
-            <div className="login-form__help" onClick={() => setIsOpen(true)}>
-              <Button variant="update" label="✏️ Actualizar" />
-            </div>
-          </div>
-        </NeuCard>
-      </div>
-      <SupportDialog isOpen={isOpen} onClose={() => setIsOpen(false)} />
-      <div className="div3">
-        <NeuCard>
-          <h2>Productos</h2>
-        </NeuCard>
+          </NeuCard>
+        </div>
       </div>
 
-      <div className="div4">
+      {/* MODALES */}
+      <AddProductModal
+        isOpen={isAddOpen}
+        onClose={() => setIsAddOpen(false)}
+        onSuccess={obtenerProductos}
+      />
+
+      <UpdateProductModal
+        isOpen={isUpdateOpen}
+        onClose={() => {
+          setIsUpdateOpen(false);
+          setSelectedProduct(null);
+        }}
+        onSuccess={obtenerProductos}
+        product={selectedProduct}
+      />
+
+      <DeleteProductModal
+        isOpen={isDeleteOpen}
+        onClose={() => {
+          setIsDeleteOpen(false);
+          setSelectedProduct(null);
+        }}
+        onConfirm={confirmDelete}
+        productName={selectedProduct?.nombre}
+      />
+
+      {/* SECCIÓN INFERIOR - Tabla */}
+      <div className="bottom-section">
         <NeuCard>
-          <div className="container">
+          <div className="container" style={{ overflowX: 'auto', width: '100%', padding: '0' }}>
             <table className="product-table">
               <thead>
                 <tr>
@@ -65,19 +159,33 @@ function App() {
                   <th>Nombre</th>
                   <th>Precio</th>
                   <th>Descripción</th>
-                  <th>Estado</th>
+                  <th>Acciones</th>
                 </tr>
               </thead>
               <tbody>
-                {productos.map((p) => (
-                  <tr key={p.id}>
-                    <td>{p.id}</td>
-                    <td>{p.nombre}</td>
-                    <td>${p.precio}</td>
+                {filteredProductos.map((p) => (
+                  <tr key={p.id} className="table-row">
+                    <td><span className="id-badge">#{p.id}</span></td>
+                    <td className="fw-bold">{p.nombre}</td>
+                    <td className="price-col">${p.precio.toFixed(2)}</td>
                     <td>{p.descripcion}</td>
-                    <td>{p.estado ? "true" : "false"}</td>
+                    <td style={{ display: 'flex', gap: '8px' }}>
+                      <button className="action-btn update-btn" onClick={() => handleUpdateClick(p)}>
+                        ✏️ Actualizar
+                      </button>
+                      <button className="action-btn delete-btn" onClick={() => handleDeleteClick(p)}>
+                        🗑️ Eliminar
+                      </button>
+                    </td>
                   </tr>
                 ))}
+                {filteredProductos.length === 0 && (
+                  <tr>
+                    <td colSpan={5} style={{ textAlign: 'center', padding: '20px', color: '#888' }}>
+                      No se encontraron productos activos.
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>

@@ -1,19 +1,20 @@
 .glass-panel {
   width: 100%;
-  max-width: 340px;
+  max-width: 440px;
+  /* Made slightly wider to fit inputs comfortably */
   height: auto;
-  min-width: 4px;
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  min-width: 320px;
+  background-color: #1e293b;
+  /* Solid slate-800 color instead of transparent */
   border-radius: 15px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  padding: 2rem;
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-  color: #222;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 2.5rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  /* Heavy box shadow to lift it up */
+  color: #f8fafc;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 .glass-panel img {
