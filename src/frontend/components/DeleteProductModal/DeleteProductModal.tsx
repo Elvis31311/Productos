@@ -1,4 +1,4 @@
-import { Dialog, DialogTitle, DialogPanel, DialogBackdrop } from '@headlessui/react';
+import { Dialog, DialogTitle, DialogBackdrop } from '@headlessui/react';
 import '../SupportDialog/SupportDialog.css'; // Reusing some base dialog styles
 
 interface DeleteProductModalProps {

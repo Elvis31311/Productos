@@ -103,7 +103,7 @@ function App() {
                 <div className="search-container" style={{ flex: '1' }}>
                   <input
                     type="text"
-                    placeholder="🔍 Buscar por ID, Nombre o Precio..."
+                    placeholder="🔎Buscar por ID, Nombre o Precio..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="search-input"
