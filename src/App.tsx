@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import './App.css';
 import { Button } from './frontend/components/button/button';
 import { NeuCard } from './frontend/components/NeuCard/NeuCard';
 import { supabase } from '../src/backend/Conection/conection';
@@ -7,6 +6,7 @@ import { AddProductModal } from './frontend/components/AddProductModal/AddProduc
 import { UpdateProductModal } from './frontend/components/UpdateProductModal/UpdateProductModal';
 import { DeleteProductModal } from './frontend/components/DeleteProductModal/DeleteProductModal';
 import { deleteProduct } from '../src/backend/Acctions/Delete/delete';
+import './App.css';
 
 interface Product {
   id: number;
